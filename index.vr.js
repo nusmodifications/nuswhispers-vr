@@ -14,7 +14,7 @@ import {
 import _ from 'lodash';
 
 const style = {
-  fontSize: 0.2,
+  fontSize: 0.15,
   layoutOrigin: [0.5, 0.5],
   paddingLeft: 0.2,
   paddingRight: 0.2,
@@ -85,8 +85,7 @@ export default class WelcomeToVR extends React.Component {
           {confession &&
             <Text style={{
               ...style,
-              paddingBottom: 0.6,
-              color: 'red',
+              backgroundColor: 'black',
             }}
               onInput={(event) => {
                 if (event.nativeEvent.inputEvent.eventType === 'click') {
@@ -107,9 +106,9 @@ export default class WelcomeToVR extends React.Component {
                         clearInterval(timer);
                         const timer2 = setInterval(() => {
                           this.setState({
-                            distance: this.state.distance - 0.3,
+                            distance: this.state.distance - 0.5,
                           });
-                          if (this.state.distance < 2) {
+                          if (this.state.distance <= 1.5) {
                             clearInterval(timer2);
                           }
                         }, LOOP);
@@ -128,7 +127,7 @@ export default class WelcomeToVR extends React.Component {
           style={{
             width: 4,
             height: 3,
-            transform: [{translate: [-2, 4.5, this.state.distance]}],
+            transform: [{translate: [-2, 3.5, this.state.distance]}],
           }}
         >
           <Sound
