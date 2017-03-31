@@ -10,6 +10,7 @@ import {
   Image,
   Scene,
   Sound,
+  VrButton,
 } from 'react-vr';
 import _ from 'lodash';
 
@@ -49,6 +50,35 @@ export default class WelcomeToVR extends React.Component {
       });
   }
 
+  nextConfession() {
+    this.setState({
+      offset: this.state.offset + 1,
+    }, this.fetchConfession);
+    if (this.state.offset === 2) {
+      setTimeout(() => {
+        this.setState({
+          playSound: true,
+        });
+      }, SOUND_DELAY);
+      const timer = setInterval(() => {
+        this.setState({
+          rotation: this.state.rotation + 5,
+        });
+        if (this.state.rotation === DEGREES) {
+          clearInterval(timer);
+          const timer2 = setInterval(() => {
+            this.setState({
+              distance: this.state.distance - 0.5,
+            });
+            if (this.state.distance <= 1.5) {
+              clearInterval(timer2);
+            }
+          }, LOOP);
+        }
+      }, LOOP);
+    }
+  }
+
   render() {
     let chunks = [];
     let confession = null;
@@ -68,6 +98,9 @@ export default class WelcomeToVR extends React.Component {
           }],
         }}/>
         <Pano source={asset('chess-world-blue.jpg')}/>
+        <VrButton
+          onClick={this.nextConfession}
+        />
         <View
           style={{
             transform: [{translate: [0, (chunks.length / 2) * 0.3, -3]}],
@@ -89,32 +122,7 @@ export default class WelcomeToVR extends React.Component {
             }}
               onInput={(event) => {
                 if (event.nativeEvent.inputEvent.eventType === 'click') {
-                  this.setState({
-                    offset: this.state.offset + 1,
-                  }, this.fetchConfession);
-                  if (this.state.offset === 2) {
-                    setTimeout(() => {
-                      this.setState({
-                        playSound: true,
-                      });
-                    }, SOUND_DELAY);
-                    const timer = setInterval(() => {
-                      this.setState({
-                        rotation: this.state.rotation + 5,
-                      });
-                      if (this.state.rotation === DEGREES) {
-                        clearInterval(timer);
-                        const timer2 = setInterval(() => {
-                          this.setState({
-                            distance: this.state.distance - 0.5,
-                          });
-                          if (this.state.distance <= 1.5) {
-                            clearInterval(timer2);
-                          }
-                        }, LOOP);
-                      }
-                    }, LOOP);
-                  }
+                  this.nextConfession();
                 }
               }}
             >
