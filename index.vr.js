@@ -41,7 +41,7 @@ export default class WelcomeToVR extends React.Component {
   }
 
   fetchConfession = () => {
-    fetch(`https://nuswhispers.com/api/confessions/popular?count=1&offset=${this.state.offset}`)
+    fetch(`https://nuswhispers.com/api/confessions/recent?count=1&offset=${this.state.offset}`)
       .then(response => response.json())
       .then(response => {
         this.setState({
